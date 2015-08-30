@@ -38,7 +38,7 @@ Also, you might need to include some qt types if you use them in your signals.
 
 License
 -------
-The code is licensed under GPL v3.0 or later (see attached `LICENSE` file)
+The code is licensed under MIT license (see attached `LICENSE` file)
 
 Author
 ------
