@@ -2,21 +2,17 @@
 
 #include <QTextStream>
 
-UserClassWriter::UserClassWriter(const QString &baseName, const QDir &targetDir)
+UserClassWriter::UserClassWriter(const ConfigFileReader &parser,
+                                 const QString &baseName, const QDir &targetDir)
+    : mParser(parser)
 {
     mBaseName = baseName;
     mTargetDir = targetDir;
 }
 
-void UserClassWriter::writeClient()
-{
-    write(mBaseName + "Client", true);
-}
+void UserClassWriter::writeClient() { write(mBaseName + "Client", true); }
 
-void UserClassWriter::writeServer()
-{
-    write(mBaseName + "Server", false);
-}
+void UserClassWriter::writeServer() { write(mBaseName + "Server", false); }
 
 void UserClassWriter::write(const QString &className, bool isClient)
 {
@@ -45,7 +41,17 @@ void UserClassWriter::write(const QString &className, bool isClient)
                                            "writeDevice = 0, bool initialize = "
                                            "false)" << endl;
             stream << "\t\t:" << className
-                   << "Base(readDevice, writeDevice, initialize) {}" << endl;
+                   << "Base(readDevice, writeDevice, initialize) {}" << endl << endl;
+            // abstract methods
+            foreach(const Method& method, mParser.methods())
+            {
+                if(!method.isReverse && method.isBlocking)
+                {
+                    stream << "\tvirtual " << method.signature(true) << "{" << endl;
+                    stream << "\t\t#error User implementation needed" << endl;
+                    stream << "\t}" << endl;
+                }
+            }
         }
 
         stream << "};" << endl;

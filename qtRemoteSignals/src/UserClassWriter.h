@@ -3,16 +3,17 @@
 
 #include <QDir>
 
-
+#include "ConfigFileReader.h"
 
 class UserClassWriter
 {
 public:
-    UserClassWriter(const QString& baseName, const QDir& targetDir);
+    UserClassWriter(const ConfigFileReader& parser, const QString& baseName, const QDir& targetDir);
     void writeClient();
     void writeServer();
 protected:
     void write(const QString& className, bool isClient);
+    const ConfigFileReader& mParser;
     QString mBaseName;
     QDir mTargetDir;
 };

@@ -1,9 +1,11 @@
 #include "Method.h"
 
 
-QString Method::signature() const
+QString Method::signature(bool withReturnType) const
 {
     QString sig;
+    if(withReturnType)
+        sig += returnType() + " ";
     sig += name;
     sig += "(";
     QStringList paramSigs;

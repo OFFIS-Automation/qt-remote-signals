@@ -5,7 +5,7 @@
 #include <QStringList>
 
 struct Method {
-    QString signature() const;
+    QString signature(bool withReturnType = false) const;
     QStringList paramNames() const;
 
     QString returnType() const;

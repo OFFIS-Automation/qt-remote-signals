@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     ConfigFileReader parser;
     parser.parse(definitionFile);
     BaseClassWriter baseWriter(parser, className, targetDir);
-    UserClassWriter userWriter(className, targetDir);
+    UserClassWriter userWriter(parser, className, targetDir);
     if (!params.contains("--server-only")) {
         baseWriter.writeClient(params.contains("--force"));
         userWriter.writeClient();
