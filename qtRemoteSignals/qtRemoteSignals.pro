@@ -12,10 +12,19 @@ DESTDIR = $${PWD}/../bin
 
 
 SOURCES += src/main.cpp \
-    ../bin/RemoteSignals.cpp
+    ../bin/RemoteSignals.cpp \
+    src/ConfigFileReader.cpp \
+    src/Method.cpp \
+    src/BaseClassWriter.cpp \
+    src/UserClassWriter.cpp
 
 HEADERS += \
-    ../bin/RemoteSignals.h
+    ../bin/RemoteSignals.h \
+    src/ConfigFileReader.h \
+    src/Method.h \
+    src/Parameter.h \
+    src/BaseClassWriter.h \
+    src/UserClassWriter.h
 
 dlls.path  =  $${DESTDIR}
 dllA.path   += $${DESTDIR}/platforms
