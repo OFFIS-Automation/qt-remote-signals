@@ -38,13 +38,16 @@ void UserClassWriter::write(const QString &className, bool isClient)
                    << "(QIODevice* writeDevice, QIODevice* "
                       "readDevice = 0, bool initialize = "
                       "false)" << endl;
+            stream << "\t\t:" << className
+                   << "Base(writeDevice, readDevice, initialize) {}" << endl;
         } else {
             stream << "\t" << className << "(QIODevice* readDevice, QIODevice* "
                                            "writeDevice = 0, bool initialize = "
                                            "false)" << endl;
+            stream << "\t\t:" << className
+                   << "Base(readDevice, writeDevice, initialize) {}" << endl;
         }
-        stream << "\t\t:" << className
-               << "Base(writeDevice, readDevice, initialize) {}" << endl;
+
         stream << "};" << endl;
         stream << "#endif // " + className.toUpper() + "_H" << endl;
     }
