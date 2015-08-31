@@ -23,6 +23,7 @@
 #include <QStringList>
 #include <QVariant>
 #include <QMutex>
+#include <QThreadPool>
 
 class RemoteSignals : public QObject
 {
@@ -37,7 +38,7 @@ private slots:
     void transmitSignalAsync(const QByteArray& msgData);
 
 protected:
-	const int version() const { return 1; }
+    const int version() const { return 2; }
     const quint64 gid1() const { return mGlobalId1; }
     const quint64 gid2() const { return mGlobalId2; }
 	quint64 nextCallUid();
@@ -50,6 +51,7 @@ private slots:
 protected:
     QMutex mUidMutex;
     QMap<quint64, QByteArray> mResponses;
+    QThreadPool mThreadPool;
 
 private:
     int mReadSize;
