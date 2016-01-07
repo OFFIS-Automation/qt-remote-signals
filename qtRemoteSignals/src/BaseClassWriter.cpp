@@ -13,7 +13,7 @@ BaseClassWriter::BaseClassWriter(const ConfigFileReader &parser,
 void BaseClassWriter::writeClient(bool skipDateCheck)
 {
     QString baseClassName = mClassName + "ClientBase";
-    if (skipDateCheck || needsGeneration(baseClassName)) {
+    if (skipDateCheck || needsGeneration(baseClassName)){
         writeHeader(baseClassName, true);
         writeImplementation(baseClassName, true);
     } else {
@@ -25,7 +25,7 @@ void BaseClassWriter::writeClient(bool skipDateCheck)
 void BaseClassWriter::writeServer(bool skipDateCheck)
 {
     QString baseClassName = mClassName + "ServerBase";
-    if (skipDateCheck || needsGeneration(baseClassName)) {
+    if (skipDateCheck || needsGeneration(baseClassName)){
         writeHeader(baseClassName, false);
         writeImplementation(baseClassName, false);
     } else {
@@ -38,11 +38,8 @@ bool BaseClassWriter::needsGeneration(const QString &className)
 {
     QFileInfo headerInfo(mTargetDir.absoluteFilePath(className + ".h"));
     QFileInfo sourceInfo(mTargetDir.absoluteFilePath(className + ".cpp"));
-    bool noUpdateNeeded =
-        headerInfo.exists() &&
-        headerInfo.lastModified() > mParser.lastConfigUpdate();
-    noUpdateNeeded &= sourceInfo.exists() &&
-                      sourceInfo.lastModified() > mParser.lastConfigUpdate();
+    bool noUpdateNeeded = headerInfo.exists() && headerInfo.lastModified() > mParser.lastConfigUpdate();
+    noUpdateNeeded &= sourceInfo.exists() && sourceInfo.lastModified() > mParser.lastConfigUpdate();
     return !noUpdateNeeded;
 }
 

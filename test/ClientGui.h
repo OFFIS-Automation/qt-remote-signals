@@ -33,15 +33,11 @@ class ClientGui : public QDialog
 public:
     explicit ClientGui(QWidget *parent = 0);
     ~ClientGui();
-    
 
 private slots:
     void on_logInfo_clicked();
-
     void on_logWarning_clicked();
-
     void on_echo_clicked();
-
     void on_connect_clicked(bool checked);
 
 private:

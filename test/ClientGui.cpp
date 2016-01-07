@@ -34,7 +34,6 @@ ClientGui::~ClientGui()
     delete ui;
 }
 
-
 void ClientGui::on_logInfo_clicked()
 {
     QString text = ui->input->text();
@@ -62,15 +61,12 @@ void ClientGui::on_echo_clicked()
 void ClientGui::on_connect_clicked(bool checked)
 {
     mSocket.connectToServer("qtRemoteSignalsTest");
-    if(mSocket.waitForConnected(1))
-    {
+    if(mSocket.waitForConnected(1)){
         connect(&mClient, SIGNAL(keepAlive()), ui->keepAlive, SLOT(stepUp()));
         mClient.initialize();
         ui->inputWidget->setEnabled(true);
         ui->connect->setEnabled(false);
-    }
-    else
-    {
+    } else {
         QMessageBox::warning(this, "Could not connect", "Could not connect to server");
         ui->connect->setChecked(false);
     }

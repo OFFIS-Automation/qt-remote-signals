@@ -25,7 +25,7 @@ The signals are transmitted over a QIODevice, thus a QLocalServer, QTcpServer or
 However, only QIODevice instances that emit readyRead can be used. Therefore, this implementation CAN NOT be used with QFile, and thus cannot be used on stdio.
 
 On the client side, the signals are implemented as slots, wrapping the parameters into a QDataStream and writing them on the QIODevice. 
-The server side listens to readyRead and emits the signals to the server. Before signals are emmited, you need to call the `initialize()` method.
+The server side listens to readyRead and emits the signals to the server. Before signals are emitted, you need to call the `initialize()` method.
 Every signal transmission includes the QtRemoteSignal implementation version and a md5 checksum of the signal definition file to avoid incompatible builds working together.
 If an incompatible build (different version of the .signal file) is detected, the receiving side quits with a `qFatal(...)`.
 

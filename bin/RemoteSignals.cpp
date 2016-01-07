@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,17 +28,18 @@ RemoteSignals::RemoteSignals(quint64 gid1, quint64 gid2, QIODevice *readDevice, 
     mReadSize = 0;
     mCallUid = 0;
     connect(this, SIGNAL(transmitSignal(QByteArray)), SLOT(transmitSignalAsync(QByteArray)));
-    if(init)
+    if(init){
         initialize();
+    }
 }
 
 void RemoteSignals::initialize()
 {
-	if(mReadDevice)
-	{
+	if(mReadDevice){
 		connect(mReadDevice, SIGNAL(readyRead()), SLOT(onReadyRead()), Qt::DirectConnection);
-		if(mReadDevice->bytesAvailable())
-			onReadyRead();
+        if(mReadDevice->bytesAvailable()){
+            onReadyRead();
+        }
 	}
 }
 
@@ -47,8 +48,9 @@ void RemoteSignals::transmitSignalAsync(const QByteArray &msgData)
     QByteArray sizeData(4,0);
     qToLittleEndian<int>(msgData.size(), (uchar*)sizeData.data());
     QMutexLocker lock(&mMutex);
-	if(!mWriteDevice)
-		throw std::runtime_error("Could not send signal: no worte device was specified!");
+    if(!mWriteDevice){
+        throw std::runtime_error("Could not send signal: no write device was specified!");
+    }
     mWriteDevice->write(sizeData);
     mWriteDevice->write(msgData);
 }
@@ -61,46 +63,44 @@ quint64 RemoteSignals::nextCallUid()
 
 const QByteArray RemoteSignals::waitForResponse(quint64 callUid)
 {
-    while(true)
-    {
+    while(true){
         QCoreApplication::processEvents();
         QMutexLocker lock(&mUidMutex);
-        if(mResponses.contains(callUid))
+        if(mResponses.contains(callUid)){
             return mResponses.take(callUid);
+        }
     }
 }
 void RemoteSignals::onReadyRead()
 {
-    while(true)
-    {
+    while(true){
         qint64 bytes = mReadDevice->bytesAvailable();
-        if(mReadSize)
-        {
+        if(mReadSize){
             if(bytes < mReadSize)
                 return;
             QByteArray data = mReadDevice->read(mReadSize);
             processRemoteInputs(data);
             mReadSize = 0;
-        }
-        else if(bytes >= 4)
-        {
+        } else if(bytes >= 4){
             QByteArray sizeArray = mReadDevice->read(4);
             mReadSize = qFromLittleEndian<int>((uchar*)sizeArray.data());
-        }
-        else
+        } else {
             return;
+        }
     }
 }
 void RemoteSignals::handleError(int id)
 {
     qCritical() << "the signal with the id " << id << " was not found!";
-    qFatal("A signal id was not found, this is a critical failure! Maybe Client and Server are out of sync?");
+    qFatal("A signal id was not found, this is a critical failure! Maybe the client and server are out of sync?");
 }
 
 void RemoteSignals::checkId(int versionId, quint64 id1, quint64 id2)
 {
-	if(versionId != version())
-		qFatal("The version the sender did not match the version of the receiver. Client and Server are out of sync.");
-    if(id1 != gid1() || id2 != gid2())
-        qFatal("The global id of the sender did not match the id of the receiver. Client and Server are out of sync.");
+    if(versionId != version()){
+        qFatal("The version of the sender did not match the version of the receiver. Client and server are out of sync.");
+    }
+    if(id1 != gid1() || id2 != gid2()){
+        qFatal("The global id of the sender did not match the id of the receiver. Client and server are out of sync.");
+    }
 }

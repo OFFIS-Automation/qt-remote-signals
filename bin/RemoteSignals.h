@@ -1,5 +1,5 @@
 // OFFIS Automation Framework
-// Copyright (C) 2013 OFFIS e.V.
+// Copyright (C) 2013-2016 OFFIS e.V.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,8 +19,6 @@
 
 #include <QObject>
 #include <QIODevice>
-#include <QDataStream>
-#include <QStringList>
 #include <QVariant>
 #include <QMutex>
 #include <QThreadPool>
@@ -34,6 +32,7 @@ public:
 
 signals:
 	void transmitSignal(const QByteArray& msgData);
+
 private slots:
     void transmitSignalAsync(const QByteArray& msgData);
 
@@ -46,8 +45,10 @@ protected:
     void handleError(int id);
     void checkId(int version, quint64 globalId1, quint64 globalId2);
     virtual void processRemoteInputs(const QByteArray& data) = 0;
+
 private slots:
     void onReadyRead();
+
 protected:
     QMutex mUidMutex;
     QMap<quint64, QByteArray> mResponses;
@@ -60,7 +61,6 @@ private:
     QIODevice* mWriteDevice;
     QMutex mMutex;
     quint64 mCallUid;
-
 };
 
 #endif // REMOTESIGNALS_H

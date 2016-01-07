@@ -2,6 +2,7 @@
 #define CONFIGUREDMETHOD_H
 
 #include "Parameter.h"
+
 #include <QStringList>
 
 struct Method {

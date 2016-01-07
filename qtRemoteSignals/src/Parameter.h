@@ -3,17 +3,17 @@
 
 #include <QString>
 
-
 struct Parameter {
     QString name;
     QString type;
     bool isBasic;
     QString signature() const
     {
-        if (isBasic)
+        if (isBasic){
             return QString("%1 %2").arg(type, name);
-        else
+        } else {
             return QString("const %1& %2").arg(type, name);
+        }
     }
 };
 

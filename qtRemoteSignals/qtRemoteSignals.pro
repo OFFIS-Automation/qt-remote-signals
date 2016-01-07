@@ -1,6 +1,5 @@
 QT       += core
 
-
 CONFIG   += console
 CONFIG   -= app_bundle
 DESTDIR = $${PWD}/../bin
@@ -11,9 +10,6 @@ CONFIG(debug, debug|release) {
 } else {
     TARGET = qtRemoteSignals
 }
-
-
-
 
 SOURCES += src/main.cpp \
     ../bin/RemoteSignals.cpp \

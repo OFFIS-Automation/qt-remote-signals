@@ -6,8 +6,6 @@
 #include <QDir>
 #include <QTextStream>
 
-
-
 class BaseClassWriter
 {
 public:
